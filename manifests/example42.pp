@@ -22,7 +22,7 @@ class ceilometer::example42 {
 
   puppi::log { 'ceilometer':
     description => 'Logs of ceilometer',
-    log         => [ '/var/log/ceilometer/api.log' , '/var/log/ceilometer/registry.log' ],
+    log         => [ '/var/log/ceilometer/ceilometer.log' ],
   }
 
 }

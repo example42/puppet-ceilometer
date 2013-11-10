@@ -25,7 +25,7 @@ define ceilometer::ceilometer_service (
   $manage_package_name = pickx($package_name, "${distro_prefix}${name}")
   $manage_service_name = pickx($service_name, "${distro_prefix}${name}")
 
-  Package<| title == $manage_package_name |> -> Nova::Conf<| |> -> Service<| title == $manage_service_name |>
+  Package<| title == $manage_package_name |> -> Ceilometer::Conf<| |> -> Service<| title == $manage_service_name |>
 
   if ($manage_package_name) {
     package { $manage_package_name:
