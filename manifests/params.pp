@@ -5,11 +5,12 @@
 class ceilometer::params {
 
   $package_name = $::osfamily ? {
-    default => 'ceilometer-api',
+    'RedHat' => 'openstack-ceilometer-common',
+    default  => 'ceilometer-common',
   }
 
   $service_name = $::osfamily ? {
-    default => 'ceilometer-api',
+    default  => '',
   }
 
   $config_file_path = $::osfamily ? {
@@ -17,7 +18,7 @@ class ceilometer::params {
   }
 
   $config_file_mode = $::osfamily ? {
-    default => '0644',
+    default => '0640',
   }
 
   $config_file_owner = $::osfamily ? {
@@ -25,7 +26,7 @@ class ceilometer::params {
   }
 
   $config_file_group = $::osfamily ? {
-    default => 'root',
+    default => 'ceilometer',
   }
 
   $config_dir_path = $::osfamily ? {

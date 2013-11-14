@@ -10,7 +10,7 @@ describe 'ceilometer' do
           :osfamily => osfamily,
         }}
         it { should contain_package('ceilometer').with_ensure('present') }
-        it { should contain_service('ceilometer').with_ensure('running') }
+#        it { should contain_service('ceilometer').with_ensure('running') }
       end
 
       describe "#{osfamily} installation of a specific package version" do
@@ -31,22 +31,22 @@ describe 'ceilometer' do
           :osfamily => osfamily,
         }}
         it 'should remove Package[ceilometer]' do should contain_package('ceilometer').with_ensure('absent') end
-        it 'should stop Service[ceilometer]' do should contain_service('ceilometer').with_ensure('stopped') end
-        it 'should not manage at boot Service[ceilometer]' do should contain_service('ceilometer').with_enable(nil) end
+#        it 'should stop Service[ceilometer]' do should contain_service('ceilometer').with_ensure('stopped') end
+#        it 'should not manage at boot Service[ceilometer]' do should contain_service('ceilometer').with_enable(nil) end
         it 'should remove ceilometer configuration file' do should contain_file('ceilometer.conf').with_ensure('absent') end
       end
 
-      describe "#{osfamily} service disabling" do
-        let(:params) { {
-          :service_ensure => 'stopped',
-          :service_enable => false,
-        } }
-        let(:facts) {{
-          :osfamily => osfamily,
-        }}
-        it 'should stop Service[ceilometer]' do should contain_service('ceilometer').with_ensure('stopped') end
-        it 'should not enable at boot Service[ceilometer]' do should contain_service('ceilometer').with_enable('false') end
-      end
+#      describe "#{osfamily} service disabling" do
+#        let(:params) { {
+#          :service_ensure => 'stopped',
+#          :service_enable => false,
+#        } }
+#        let(:facts) {{
+#          :osfamily => osfamily,
+#        }}
+#        it 'should stop Service[ceilometer]' do should contain_service('ceilometer').with_ensure('stopped') end
+#        it 'should not enable at boot Service[ceilometer]' do should contain_service('ceilometer').with_enable('false') end
+#      end
 
       describe "#{osfamily} configuration via custom template" do
         let(:params) { {
@@ -100,7 +100,7 @@ describe 'ceilometer' do
           :osfamily => osfamily,
         }}
         it 'should automatically restart the service when files change' do
-          should contain_file('ceilometer.conf').with_notify('Service[ceilometer]')
+          should contain_file('ceilometer.conf').without_notify
         end
       end
 

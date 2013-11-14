@@ -20,16 +20,17 @@ This module installs, manages and configures ceilometer and its services.
 
 The module is based on **stdmod** naming standards version 0.9.0.
 
-Refer to http://github.com/stdmod/ for complete documentation on the common parameters.
+Refer to [http://github.com/stdmod/](http://github.com/stdmod/) for complete documentation on the common parameters.
 
+For a fully automated Puppet setup of OpenStack you'd better use the official [StackForge modules](https://github.com/stackforge/puppet-openstack).
+This module is intended to be a quick replacement for setups where you want to manage configurations based on plain template files or where you want to puppettize an existing OpenStack installation.
 
 ##Setup
 
 ###Resources managed by ceilometer module
-* This module installs the ceilometer package
-* Enables the ceilometer service
+* This module installs the ceilometer common package
 * Can manage all the configuration files (by default no file is changed)
-* Can manage any ceilometer service and its configuration file (by default no file is changed)
+* Can manage any ceilometer service, the relevant package, and its configuration file
 
 ###Setup Requirements
 * PuppetLabs [stdlib module](https://github.com/puppetlabs/puppetlabs-stdlib)
@@ -57,12 +58,12 @@ The module provides a generic define to manage any ceilometer configuration file
 
 A define to manage the package/service/configfile of single ceilometer services. To install the package and run the service:
 
-        ceilometer::generic_service { 'ceilometer-api': }
+        ceilometer::generic_service { 'ceilometer-registry': }
 
 To provide a configuration file for the service (alternative to ceilometer::conf):
 
-        ceilometer::generic_service { 'ceilometer-api':
-          config_file_template => 'site/ceilometer/ceilometer-api.conf
+        ceilometer::generic_service { 'ceilometer-registry':
+          config_file_template => 'site/ceilometer/ceilometer-registry.conf
         }
 
 ##Usage
@@ -91,7 +92,7 @@ To provide a configuration file for the service (alternative to ceilometer::conf
         }
 
 
-* Use custom source directory for the whole configuration directory, where present.
+* Recurse from a custom source directory for the whole configuration directory (/etc/ceilometer).
 
         class { 'ceilometer':
           config_dir_source  => 'puppet:///modules/site/ceilometer/conf/',

@@ -21,7 +21,7 @@ class ceilometer (
   $config_file_path          = $ceilometer::params::config_file_path,
   $config_file_replace       = $ceilometer::params::config_file_replace,
   $config_file_require       = 'Package[ceilometer]',
-  $config_file_notify        = 'Service[ceilometer]',
+  $config_file_notify        = 'class_default',
   $config_file_source        = undef,
   $config_file_template      = undef,
   $config_file_content       = undef,
@@ -65,7 +65,7 @@ class ceilometer (
   $manage_config_file_content = default_content($config_file_content, $config_file_template)
 
   $manage_config_file_notify  = $config_file_notify ? {
-    'class_default' => 'Service[ceilometer]',
+    'class_default' => undef,
     ''              => undef,
     default         => $config_file_notify,
   }
