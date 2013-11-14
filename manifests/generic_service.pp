@@ -21,6 +21,7 @@ define ceilometer::generic_service (
   $config_file_content       = undef,
   $config_file_options_hash  = { },
 
+  $config_dir_path           = '/etc/ceilometer',
 ) {
 
   $distro_prefix = $::osfamily ? {
@@ -30,6 +31,7 @@ define ceilometer::generic_service (
 
   $manage_package_name = pickx($package_name, "${distro_prefix}${name}")
   $manage_service_name = pickx($service_name, "${distro_prefix}${name}")
+  $manage_config_file_path = pickx($config_file_path, "${config_dir_path}/${name}.conf")
   $manage_config_file_content = default_content($config_file_content, $config_file_template)
   $manage_config_file_notify  = $config_file_notify ? {
     'default'       => "Service[${name}]",
