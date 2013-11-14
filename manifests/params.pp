@@ -4,18 +4,12 @@
 #
 class ceilometer::params {
 
-  $extra_package_name = $::osfamily ? {
-    default  => 'python-ceilometer',
-  }
-
   $package_name = $::osfamily ? {
-    'Redhat' => 'openstack-ceilometer-compute',
-    default  => 'ceilometer-compute',
+    default => 'ceilometer-api',
   }
 
   $service_name = $::osfamily ? {
-    'Redhat' => 'openstack-ceilometer-compute',
-    default  => 'ceilometer-compute',
+    default => 'ceilometer-api',
   }
 
   $config_file_path = $::osfamily ? {

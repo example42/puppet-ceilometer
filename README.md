@@ -14,7 +14,7 @@
 
 ##Overview
 
-This module installs, manages and configures ceilometer.
+This module installs, manages and configures ceilometer and its services.
 
 ##Module Description
 
@@ -22,19 +22,18 @@ The module is based on **stdmod** naming standards version 0.9.0.
 
 Refer to http://github.com/stdmod/ for complete documentation on the common parameters.
 
-For a fully puppetized OpenStack implementation you'd better use the official StackForge modules. This module is intended to be a quick replacement for setups where you want to manage configurations based on plain files on an existing setup.
-
 
 ##Setup
 
 ###Resources managed by ceilometer module
 * This module installs the ceilometer package
-* Enables the ceilometer-api and ceilometer-registry services
+* Enables the ceilometer service
 * Can manage all the configuration files (by default no file is changed)
+* Can manage any ceilometer service and its configuration file (by default no file is changed)
 
 ###Setup Requirements
-* PuppetLabs stdlib module
-* StdMod stdmod module
+* PuppetLabs [stdlib module](https://github.com/puppetlabs/puppetlabs-stdlib)
+* StdMod [stdmod module](https://github.com/stdmod/stdmod)
 * Puppet version >= 2.7.x
 * Facter version >= 1.6.2
 
@@ -50,12 +49,21 @@ The main class arguments can be provided either via Hiera (from Puppet 3.x) or d
           parameter => value,
         }
 
-The module provides also a generic define to manage any ceilometer configuration file:
+The module provides a generic define to manage any ceilometer configuration file in /etc/ceilometer:
 
         ceilometer::conf { 'sample.conf':
           content => '# Test',
         }
 
+A define to manage the package/service/configfile of single ceilometer services. To install the package and run the service:
+
+        ceilometer::generic_service { 'ceilometer-api': }
+
+To provide a configuration file for the service (alternative to ceilometer::conf):
+
+        ceilometer::generic_service { 'ceilometer-api':
+          config_file_template => 'site/ceilometer/ceilometer-api.conf
+        }
 
 ##Usage
 
@@ -104,26 +112,18 @@ The module provides also a generic define to manage any ceilometer configuration
           config_dir_recursion => false, # Default: true.
         }
 
-
-* Install extra packages (clients, plugins...). Can be an array. Default: client package.
-
-        class { 'ceilometer':
-          extra_package_name    => [ 'python-ceilometer' , 'python-ceilometerclient' ],
-        }
-
-
-* Use the additional example42 subclass for puppi extensions
+* Do not trigger a service restart when a config file changes.
 
         class { 'ceilometer':
-          my_class => 'ceilometer::example42'
+          config_dir_notify => '', # Default: Service[ceilometer]
         }
+
 
 ##Operating Systems Support
 
 This is tested on these OS:
-- RedHat osfamily 5 and 6
-- Debian 6 and 7
-- Ubuntu 10.04 and 12.04
+- RedHat osfamily 6
+- Ubuntu 12.04
 
 
 ##Development

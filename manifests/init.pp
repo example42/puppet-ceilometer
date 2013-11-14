@@ -11,16 +11,12 @@
 #
 class ceilometer (
 
-  $extra_package_name        = $ceilometer::params::extra_package_name,
-
   $package_name              = $ceilometer::params::package_name,
   $package_ensure            = 'present',
 
   $service_name              = $ceilometer::params::service_name,
   $service_ensure            = 'running',
   $service_enable            = true,
-
-  $registry_service_name     = $ceilometer::params::registry_service_name,
 
   $config_file_path          = $ceilometer::params::config_file_path,
   $config_file_replace       = $ceilometer::params::config_file_replace,
@@ -30,7 +26,6 @@ class ceilometer (
   $config_file_template      = undef,
   $config_file_content       = undef,
   $config_file_options_hash  = undef,
-
 
   $config_dir_path           = $ceilometer::params::config_dir_path,
   $config_dir_source         = undef,
@@ -69,7 +64,11 @@ class ceilometer (
 
   $manage_config_file_content = default_content($config_file_content, $config_file_template)
 
-  $manage_config_file_notify = pickx($config_file_notify)
+  $manage_config_file_notify  = $config_file_notify ? {
+    'class_default' => 'Service[ceilometer]',
+    ''              => undef,
+    default         => $config_file_notify,
+  }
 
   if $package_ensure == 'absent' {
     $manage_service_enable = undef
@@ -87,24 +86,16 @@ class ceilometer (
   # Resources managed
 
   if $ceilometer::package_name {
-    package { $ceilometer::package_name:
+    package { 'ceilometer':
       ensure   => $ceilometer::package_ensure,
-    }
-  }
-
-  if $ceilometer::extra_package_name {
-    package { $ceilometer::extra_package_name:
-      ensure   => $ceilometer::package_ensure,
+      name     => $ceilometer::package_name,
     }
   }
 
   if $ceilometer::service_name {
-    service { $ceilometer::service_name:
+    service { 'ceilometer':
       ensure     => $ceilometer::manage_service_ensure,
-      enable     => $ceilometer::manage_service_enable,
-    }
-    service { $ceilometer::registry_service_name:
-      ensure     => $ceilometer::manage_service_ensure,
+      name       => $ceilometer::service_name,
       enable     => $ceilometer::manage_service_enable,
     }
   }
@@ -131,7 +122,7 @@ class ceilometer (
       recurse => $ceilometer::config_dir_recurse,
       purge   => $ceilometer::config_dir_purge,
       force   => $ceilometer::config_dir_purge,
-      notify  => $ceilometer::config_file_notify,
+      notify  => $ceilometer::manage_config_file_notify,
       require => $ceilometer::config_file_require,
     }
   }

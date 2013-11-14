@@ -57,7 +57,7 @@ define ceilometer::conf (
   $mode         = undef,
   $owner        = undef,
   $group        = undef,
-  $notify       = undef,
+  $notify       = 'class_default',
   $require      = undef,
   $replace      = undef,
 
@@ -75,8 +75,11 @@ define ceilometer::conf (
   $manage_owner   = pickx($owner, $ceilometer::config_file_owner)
   $manage_group   = pickx($group, $ceilometer::config_file_group)
   $manage_require = pickx($require, $ceilometer::config_file_require)
-  $manage_notify  = pickx($notify, $ceilometer::manage_config_file_notify)
   $manage_replace = pickx($replace, $ceilometer::config_file_replace)
+  $manage_notify  = $notify ? {
+    'class_default' => $ceilometer::manage_config_file_notify,
+    default         => $notify,
+  }
 
   file { "ceilometer_conf_${name}":
     ensure  => $ensure,
