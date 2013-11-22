@@ -141,7 +141,7 @@ class ceilometer (
   if $ceilometer::monitor_class {
     class { $ceilometer::monitor_class:
       options_hash => $ceilometer::monitor_options_hash,
-      scope_hash   => {}, # TODO: Find a good way to inject class' scope
+      scope_hash   => {}, # TODO: Find a good way to inject class' scope
     }
   }
 
