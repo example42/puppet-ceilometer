@@ -11,6 +11,9 @@
 #
 class ceilometer (
 
+  $conf_hash                 = undef,
+  $generic_service_hash      = undef,
+
   $package_name              = $ceilometer::params::package_name,
   $package_ensure            = 'present',
 
@@ -92,14 +95,6 @@ class ceilometer (
     }
   }
 
-  if $ceilometer::service_name {
-    service { 'ceilometer':
-      ensure     => $ceilometer::manage_service_ensure,
-      name       => $ceilometer::service_name,
-      enable     => $ceilometer::manage_service_enable,
-    }
-  }
-
   if $ceilometer::config_file_path {
     file { 'ceilometer.conf':
       ensure  => $ceilometer::config_file_ensure,
@@ -127,8 +122,24 @@ class ceilometer (
     }
   }
 
+  if $ceilometer::service_name {
+    service { 'ceilometer':
+      ensure     => $ceilometer::manage_service_ensure,
+      name       => $ceilometer::service_name,
+      enable     => $ceilometer::manage_service_enable,
+    }
+  }
+
 
   # Extra classes
+  if $conf_hash {
+    create_resources('ceilometer::conf', $conf_hash)
+  }
+
+  if $generic_service_hash {
+    create_resources('ceilometer::generic_service', $generic_service_hash)
+  }
+
 
   if $ceilometer::dependency_class {
     include $ceilometer::dependency_class
