@@ -70,7 +70,7 @@ define ceilometer::conf (
   include ceilometer
 
   $manage_path    = pickx($path, "${ceilometer::config_dir_path}/${name}")
-  $manage_content = choose_default($content, $template)
+  $manage_content = default_content($content, $template)
   $manage_mode    = pickx($mode, $ceilometer::config_file_mode)
   $manage_owner   = pickx($owner, $ceilometer::config_file_owner)
   $manage_group   = pickx($group, $ceilometer::config_file_group)
