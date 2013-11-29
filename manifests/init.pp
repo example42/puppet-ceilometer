@@ -64,6 +64,8 @@ class ceilometer (
   $config_file_owner          = $ceilometer::params::config_file_owner
   $config_file_group          = $ceilometer::params::config_file_group
   $config_file_mode           = $ceilometer::params::config_file_mode
+  $config_dir_owner           = $ceilometer::params::config_dir_owner
+  $config_dir_group           = $ceilometer::params::config_dir_group
 
   $manage_config_file_content = default_content($config_file_content, $config_file_template)
 
@@ -113,6 +115,8 @@ class ceilometer (
     file { 'ceilometer.dir':
       ensure  => $ceilometer::config_dir_ensure,
       path    => $ceilometer::config_dir_path,
+      owner   => $ceilometer::config_dir_owner,
+      group   => $ceilometer::config_dir_group,
       source  => $ceilometer::config_dir_source,
       recurse => $ceilometer::config_dir_recurse,
       purge   => $ceilometer::config_dir_purge,

@@ -22,15 +22,23 @@ class ceilometer::params {
   }
 
   $config_file_owner = $::osfamily ? {
+    default => 'root',
+  }
+
+  $config_file_group = $::osfamily ? {
+    default => 'root',
+  }
+
+  $config_dir_path = $::osfamily ? {
+    default => '/etc/ceilometer',
+  }
+
+  $config_file_owner = $::osfamily ? {
     default => 'ceilometer',
   }
 
   $config_file_group = $::osfamily ? {
     default => 'ceilometer',
-  }
-
-  $config_dir_path = $::osfamily ? {
-    default => '/etc/ceilometer',
   }
 
   case $::osfamily {
