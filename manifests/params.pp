@@ -33,11 +33,11 @@ class ceilometer::params {
     default => '/etc/ceilometer',
   }
 
-  $config_file_owner = $::osfamily ? {
+  $config_dir_owner = $::osfamily ? {
     default => 'ceilometer',
   }
 
-  $config_file_group = $::osfamily ? {
+  $config_dir_group = $::osfamily ? {
     default => 'ceilometer',
   }
 
