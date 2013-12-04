@@ -29,16 +29,16 @@ class ceilometer (
   $config_file_template      = undef,
   $config_file_content       = undef,
   $config_file_options_hash  = undef,
-  $config_file_owner         = $ceilometer::params::config_file_owner
-  $config_file_group         = $ceilometer::params::config_file_group
-  $config_file_mode          = $ceilometer::params::config_file_mode
+  $config_file_owner         = $ceilometer::params::config_file_owner,
+  $config_file_group         = $ceilometer::params::config_file_group,
+  $config_file_mode          = $ceilometer::params::config_file_mode,
 
   $config_dir_path           = $ceilometer::params::config_dir_path,
   $config_dir_source         = undef,
   $config_dir_purge          = false,
   $config_dir_recurse        = true,
-  $config_dir_owner          = $ceilometer::params::config_dir_owner
-  $config_dir_group          = $ceilometer::params::config_dir_group
+  $config_dir_owner          = $ceilometer::params::config_dir_owner,
+  $config_dir_group          = $ceilometer::params::config_dir_group,
 
   $dependency_class          = undef,
   $my_class                  = undef,
