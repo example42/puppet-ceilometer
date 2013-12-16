@@ -80,12 +80,19 @@ class ceilometer (
     $config_dir_ensure = absent
     $config_file_ensure = absent
   } else {
-    $manage_service_enable = $service_enable
-    $manage_service_ensure = $service_ensure
+    $manage_service_enable = $service_enable ? {
+      ''      => undef,
+      'undef' => undef,
+      default => $service_enable,
+    }
+    $manage_service_ensure = $service_ensure ? {
+      ''      => undef,
+      'undef' => undef,
+      default => $service_ensure,
+    }
     $config_dir_ensure = directory
     $config_file_ensure = present
   }
-
 
   # Resources managed
 
